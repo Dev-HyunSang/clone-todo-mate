@@ -29,38 +29,59 @@ type ToDo struct {
 }
 
 // === API Struct ===
+// API 구조체 생성 시 필수 사항:
+/* type ApiStruct struct{
+	Code string `json:"code"`
+	StatusCode int `json:"status_code"`
+	Success bool `json:"success"`
+	Message string `json:"messgae"`
+	ErrMessage string `json:"err_message"` 오류 응답 구조체에만 사용함.
+	RespondedAt time.Time `json:"resoponded_at"`
+}*/
+
 type RequestLogin struct {
 	UserEmail    string `json:"user_email"`
 	UserPassword string `json:"user_password"`
 }
 
 type SuccessRespUserData struct {
-	Code        int       `json:"code"`
+	Code        string    `json:"code"`
+	StatusCode  int       `json:"status_code"`
 	Success     bool      `json:"success"`
 	Message     string    `json:"message"`
 	Data        *ent.User `json:"data"`
 	RespondedAt time.Time `json:"responded_at"`
 }
 
+// 구조체 이름이 길어지는 건 기분탓...
+type SuccessRespSeachingUser struct {
+	Code       string `json:"code"`
+	StatusCode int    `json:"status_code"`
+	Success    bool   `json:"success"`
+}
+
 type SuccessResp struct {
-	Code        int       `json:"code"`
+	Code        string    `json:"code"`
+	StatusCode  int       `json:"status_code"`
 	Success     bool      `json:"success"`
 	Message     string    `json:"message"`
 	RespondedAt time.Time `json:"responded_at"`
 }
 
 type SuccessLoginResp struct {
-	Code    int    `json:"code"`
-	Success bool   `json:"success"`
-	Message string `json:"message"`
-	Data    struct {
+	Code       string `json:"code"`
+	StatusCode int    `json:"status_code"`
+	Success    bool   `json:"success"`
+	Message    string `json:"message"`
+	Data       struct {
 		Token jwt.Token `json:"token"`
 	}
 	ResopondedAt time.Time `json:"resoponded_at"`
 }
 
 type ErrResp struct {
-	Code        int       `json:"code"`
+	Code        string    `json:"code"`
+	StatusCode  int       `json:"status_code"`
 	Success     bool      `json:"success"`
 	Message     string    `json:"message"`
 	ErrMessage  error     `json:"err_message"`
