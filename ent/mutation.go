@@ -41,7 +41,8 @@ type ToDoMutation struct {
 	todo_context  *string
 	completion    *bool
 	completed_at  *time.Time
-	created_at    *string
+	created_at    *time.Time
+	edited_at     *time.Time
 	clearedFields map[string]struct{}
 	done          bool
 	oldValue      func(context.Context) (*ToDo, error)
@@ -327,12 +328,12 @@ func (m *ToDoMutation) ResetCompletedAt() {
 }
 
 // SetCreatedAt sets the "created_at" field.
-func (m *ToDoMutation) SetCreatedAt(s string) {
-	m.created_at = &s
+func (m *ToDoMutation) SetCreatedAt(t time.Time) {
+	m.created_at = &t
 }
 
 // CreatedAt returns the value of the "created_at" field in the mutation.
-func (m *ToDoMutation) CreatedAt() (r string, exists bool) {
+func (m *ToDoMutation) CreatedAt() (r time.Time, exists bool) {
 	v := m.created_at
 	if v == nil {
 		return
@@ -343,7 +344,7 @@ func (m *ToDoMutation) CreatedAt() (r string, exists bool) {
 // OldCreatedAt returns the old "created_at" field's value of the ToDo entity.
 // If the ToDo object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ToDoMutation) OldCreatedAt(ctx context.Context) (v string, err error) {
+func (m *ToDoMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldCreatedAt is only allowed on UpdateOne operations")
 	}
@@ -360,6 +361,42 @@ func (m *ToDoMutation) OldCreatedAt(ctx context.Context) (v string, err error) {
 // ResetCreatedAt resets all changes to the "created_at" field.
 func (m *ToDoMutation) ResetCreatedAt() {
 	m.created_at = nil
+}
+
+// SetEditedAt sets the "edited_at" field.
+func (m *ToDoMutation) SetEditedAt(t time.Time) {
+	m.edited_at = &t
+}
+
+// EditedAt returns the value of the "edited_at" field in the mutation.
+func (m *ToDoMutation) EditedAt() (r time.Time, exists bool) {
+	v := m.edited_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldEditedAt returns the old "edited_at" field's value of the ToDo entity.
+// If the ToDo object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ToDoMutation) OldEditedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldEditedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldEditedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldEditedAt: %w", err)
+	}
+	return oldValue.EditedAt, nil
+}
+
+// ResetEditedAt resets all changes to the "edited_at" field.
+func (m *ToDoMutation) ResetEditedAt() {
+	m.edited_at = nil
 }
 
 // Where appends a list predicates to the ToDoMutation builder.
@@ -381,7 +418,7 @@ func (m *ToDoMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *ToDoMutation) Fields() []string {
-	fields := make([]string, 0, 6)
+	fields := make([]string, 0, 7)
 	if m.todo_uuid != nil {
 		fields = append(fields, todo.FieldTodoUUID)
 	}
@@ -399,6 +436,9 @@ func (m *ToDoMutation) Fields() []string {
 	}
 	if m.created_at != nil {
 		fields = append(fields, todo.FieldCreatedAt)
+	}
+	if m.edited_at != nil {
+		fields = append(fields, todo.FieldEditedAt)
 	}
 	return fields
 }
@@ -420,6 +460,8 @@ func (m *ToDoMutation) Field(name string) (ent.Value, bool) {
 		return m.CompletedAt()
 	case todo.FieldCreatedAt:
 		return m.CreatedAt()
+	case todo.FieldEditedAt:
+		return m.EditedAt()
 	}
 	return nil, false
 }
@@ -441,6 +483,8 @@ func (m *ToDoMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldCompletedAt(ctx)
 	case todo.FieldCreatedAt:
 		return m.OldCreatedAt(ctx)
+	case todo.FieldEditedAt:
+		return m.OldEditedAt(ctx)
 	}
 	return nil, fmt.Errorf("unknown ToDo field %s", name)
 }
@@ -486,11 +530,18 @@ func (m *ToDoMutation) SetField(name string, value ent.Value) error {
 		m.SetCompletedAt(v)
 		return nil
 	case todo.FieldCreatedAt:
-		v, ok := value.(string)
+		v, ok := value.(time.Time)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetCreatedAt(v)
+		return nil
+	case todo.FieldEditedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetEditedAt(v)
 		return nil
 	}
 	return fmt.Errorf("unknown ToDo field %s", name)
@@ -558,6 +609,9 @@ func (m *ToDoMutation) ResetField(name string) error {
 		return nil
 	case todo.FieldCreatedAt:
 		m.ResetCreatedAt()
+		return nil
+	case todo.FieldEditedAt:
+		m.ResetEditedAt()
 		return nil
 	}
 	return fmt.Errorf("unknown ToDo field %s", name)

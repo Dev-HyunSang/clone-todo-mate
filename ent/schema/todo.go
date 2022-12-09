@@ -1,6 +1,8 @@
 package schema
 
 import (
+	"time"
+
 	"entgo.io/ent"
 	"entgo.io/ent/schema/field"
 	"github.com/google/uuid"
@@ -24,8 +26,10 @@ func (ToDo) Fields() []ent.Field {
 			Default(false),
 		field.Time("completed_at").
 			Default("null"), // 완료하지 않으면 표시하지 않음.
-		field.String("created_at").
-			Default("null"), // Year-Mouth-Day
+		field.Time("created_at").
+			Default(time.Now()), // Year-Mouth-Day
+		field.Time("edited_at").
+			Default(time.Now()),
 	}
 }
 

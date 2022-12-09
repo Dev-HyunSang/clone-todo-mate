@@ -100,15 +100,29 @@ func (tdu *ToDoUpdate) SetNillableCompletedAt(t *time.Time) *ToDoUpdate {
 }
 
 // SetCreatedAt sets the "created_at" field.
-func (tdu *ToDoUpdate) SetCreatedAt(s string) *ToDoUpdate {
-	tdu.mutation.SetCreatedAt(s)
+func (tdu *ToDoUpdate) SetCreatedAt(t time.Time) *ToDoUpdate {
+	tdu.mutation.SetCreatedAt(t)
 	return tdu
 }
 
 // SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
-func (tdu *ToDoUpdate) SetNillableCreatedAt(s *string) *ToDoUpdate {
-	if s != nil {
-		tdu.SetCreatedAt(*s)
+func (tdu *ToDoUpdate) SetNillableCreatedAt(t *time.Time) *ToDoUpdate {
+	if t != nil {
+		tdu.SetCreatedAt(*t)
+	}
+	return tdu
+}
+
+// SetEditedAt sets the "edited_at" field.
+func (tdu *ToDoUpdate) SetEditedAt(t time.Time) *ToDoUpdate {
+	tdu.mutation.SetEditedAt(t)
+	return tdu
+}
+
+// SetNillableEditedAt sets the "edited_at" field if the given value is not nil.
+func (tdu *ToDoUpdate) SetNillableEditedAt(t *time.Time) *ToDoUpdate {
+	if t != nil {
+		tdu.SetEditedAt(*t)
 	}
 	return tdu
 }
@@ -227,9 +241,16 @@ func (tdu *ToDoUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := tdu.mutation.CreatedAt(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
+			Type:   field.TypeTime,
 			Value:  value,
 			Column: todo.FieldCreatedAt,
+		})
+	}
+	if value, ok := tdu.mutation.EditedAt(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: todo.FieldEditedAt,
 		})
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, tdu.driver, _spec); err != nil {
@@ -322,15 +343,29 @@ func (tduo *ToDoUpdateOne) SetNillableCompletedAt(t *time.Time) *ToDoUpdateOne {
 }
 
 // SetCreatedAt sets the "created_at" field.
-func (tduo *ToDoUpdateOne) SetCreatedAt(s string) *ToDoUpdateOne {
-	tduo.mutation.SetCreatedAt(s)
+func (tduo *ToDoUpdateOne) SetCreatedAt(t time.Time) *ToDoUpdateOne {
+	tduo.mutation.SetCreatedAt(t)
 	return tduo
 }
 
 // SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
-func (tduo *ToDoUpdateOne) SetNillableCreatedAt(s *string) *ToDoUpdateOne {
-	if s != nil {
-		tduo.SetCreatedAt(*s)
+func (tduo *ToDoUpdateOne) SetNillableCreatedAt(t *time.Time) *ToDoUpdateOne {
+	if t != nil {
+		tduo.SetCreatedAt(*t)
+	}
+	return tduo
+}
+
+// SetEditedAt sets the "edited_at" field.
+func (tduo *ToDoUpdateOne) SetEditedAt(t time.Time) *ToDoUpdateOne {
+	tduo.mutation.SetEditedAt(t)
+	return tduo
+}
+
+// SetNillableEditedAt sets the "edited_at" field if the given value is not nil.
+func (tduo *ToDoUpdateOne) SetNillableEditedAt(t *time.Time) *ToDoUpdateOne {
+	if t != nil {
+		tduo.SetEditedAt(*t)
 	}
 	return tduo
 }
@@ -479,9 +514,16 @@ func (tduo *ToDoUpdateOne) sqlSave(ctx context.Context) (_node *ToDo, err error)
 	}
 	if value, ok := tduo.mutation.CreatedAt(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
+			Type:   field.TypeTime,
 			Value:  value,
 			Column: todo.FieldCreatedAt,
+		})
+	}
+	if value, ok := tduo.mutation.EditedAt(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: todo.FieldEditedAt,
 		})
 	}
 	_node = &ToDo{config: tduo.config}

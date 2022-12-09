@@ -117,9 +117,16 @@ func CompletedAt(v time.Time) predicate.ToDo {
 }
 
 // CreatedAt applies equality check predicate on the "created_at" field. It's identical to CreatedAtEQ.
-func CreatedAt(v string) predicate.ToDo {
+func CreatedAt(v time.Time) predicate.ToDo {
 	return predicate.ToDo(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldCreatedAt), v))
+	})
+}
+
+// EditedAt applies equality check predicate on the "edited_at" field. It's identical to EditedAtEQ.
+func EditedAt(v time.Time) predicate.ToDo {
+	return predicate.ToDo(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldEditedAt), v))
 	})
 }
 
@@ -429,21 +436,21 @@ func CompletedAtLTE(v time.Time) predicate.ToDo {
 }
 
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
-func CreatedAtEQ(v string) predicate.ToDo {
+func CreatedAtEQ(v time.Time) predicate.ToDo {
 	return predicate.ToDo(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldCreatedAt), v))
 	})
 }
 
 // CreatedAtNEQ applies the NEQ predicate on the "created_at" field.
-func CreatedAtNEQ(v string) predicate.ToDo {
+func CreatedAtNEQ(v time.Time) predicate.ToDo {
 	return predicate.ToDo(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldCreatedAt), v))
 	})
 }
 
 // CreatedAtIn applies the In predicate on the "created_at" field.
-func CreatedAtIn(vs ...string) predicate.ToDo {
+func CreatedAtIn(vs ...time.Time) predicate.ToDo {
 	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -454,7 +461,7 @@ func CreatedAtIn(vs ...string) predicate.ToDo {
 }
 
 // CreatedAtNotIn applies the NotIn predicate on the "created_at" field.
-func CreatedAtNotIn(vs ...string) predicate.ToDo {
+func CreatedAtNotIn(vs ...time.Time) predicate.ToDo {
 	v := make([]any, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -465,65 +472,94 @@ func CreatedAtNotIn(vs ...string) predicate.ToDo {
 }
 
 // CreatedAtGT applies the GT predicate on the "created_at" field.
-func CreatedAtGT(v string) predicate.ToDo {
+func CreatedAtGT(v time.Time) predicate.ToDo {
 	return predicate.ToDo(func(s *sql.Selector) {
 		s.Where(sql.GT(s.C(FieldCreatedAt), v))
 	})
 }
 
 // CreatedAtGTE applies the GTE predicate on the "created_at" field.
-func CreatedAtGTE(v string) predicate.ToDo {
+func CreatedAtGTE(v time.Time) predicate.ToDo {
 	return predicate.ToDo(func(s *sql.Selector) {
 		s.Where(sql.GTE(s.C(FieldCreatedAt), v))
 	})
 }
 
 // CreatedAtLT applies the LT predicate on the "created_at" field.
-func CreatedAtLT(v string) predicate.ToDo {
+func CreatedAtLT(v time.Time) predicate.ToDo {
 	return predicate.ToDo(func(s *sql.Selector) {
 		s.Where(sql.LT(s.C(FieldCreatedAt), v))
 	})
 }
 
 // CreatedAtLTE applies the LTE predicate on the "created_at" field.
-func CreatedAtLTE(v string) predicate.ToDo {
+func CreatedAtLTE(v time.Time) predicate.ToDo {
 	return predicate.ToDo(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldCreatedAt), v))
 	})
 }
 
-// CreatedAtContains applies the Contains predicate on the "created_at" field.
-func CreatedAtContains(v string) predicate.ToDo {
+// EditedAtEQ applies the EQ predicate on the "edited_at" field.
+func EditedAtEQ(v time.Time) predicate.ToDo {
 	return predicate.ToDo(func(s *sql.Selector) {
-		s.Where(sql.Contains(s.C(FieldCreatedAt), v))
+		s.Where(sql.EQ(s.C(FieldEditedAt), v))
 	})
 }
 
-// CreatedAtHasPrefix applies the HasPrefix predicate on the "created_at" field.
-func CreatedAtHasPrefix(v string) predicate.ToDo {
+// EditedAtNEQ applies the NEQ predicate on the "edited_at" field.
+func EditedAtNEQ(v time.Time) predicate.ToDo {
 	return predicate.ToDo(func(s *sql.Selector) {
-		s.Where(sql.HasPrefix(s.C(FieldCreatedAt), v))
+		s.Where(sql.NEQ(s.C(FieldEditedAt), v))
 	})
 }
 
-// CreatedAtHasSuffix applies the HasSuffix predicate on the "created_at" field.
-func CreatedAtHasSuffix(v string) predicate.ToDo {
+// EditedAtIn applies the In predicate on the "edited_at" field.
+func EditedAtIn(vs ...time.Time) predicate.ToDo {
+	v := make([]any, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
 	return predicate.ToDo(func(s *sql.Selector) {
-		s.Where(sql.HasSuffix(s.C(FieldCreatedAt), v))
+		s.Where(sql.In(s.C(FieldEditedAt), v...))
 	})
 }
 
-// CreatedAtEqualFold applies the EqualFold predicate on the "created_at" field.
-func CreatedAtEqualFold(v string) predicate.ToDo {
+// EditedAtNotIn applies the NotIn predicate on the "edited_at" field.
+func EditedAtNotIn(vs ...time.Time) predicate.ToDo {
+	v := make([]any, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
 	return predicate.ToDo(func(s *sql.Selector) {
-		s.Where(sql.EqualFold(s.C(FieldCreatedAt), v))
+		s.Where(sql.NotIn(s.C(FieldEditedAt), v...))
 	})
 }
 
-// CreatedAtContainsFold applies the ContainsFold predicate on the "created_at" field.
-func CreatedAtContainsFold(v string) predicate.ToDo {
+// EditedAtGT applies the GT predicate on the "edited_at" field.
+func EditedAtGT(v time.Time) predicate.ToDo {
 	return predicate.ToDo(func(s *sql.Selector) {
-		s.Where(sql.ContainsFold(s.C(FieldCreatedAt), v))
+		s.Where(sql.GT(s.C(FieldEditedAt), v))
+	})
+}
+
+// EditedAtGTE applies the GTE predicate on the "edited_at" field.
+func EditedAtGTE(v time.Time) predicate.ToDo {
+	return predicate.ToDo(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldEditedAt), v))
+	})
+}
+
+// EditedAtLT applies the LT predicate on the "edited_at" field.
+func EditedAtLT(v time.Time) predicate.ToDo {
+	return predicate.ToDo(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldEditedAt), v))
+	})
+}
+
+// EditedAtLTE applies the LTE predicate on the "edited_at" field.
+func EditedAtLTE(v time.Time) predicate.ToDo {
+	return predicate.ToDo(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldEditedAt), v))
 	})
 }
 

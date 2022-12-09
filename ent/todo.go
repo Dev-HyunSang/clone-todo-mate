@@ -28,7 +28,9 @@ type ToDo struct {
 	// CompletedAt holds the value of the "completed_at" field.
 	CompletedAt time.Time `json:"completed_at,omitempty"`
 	// CreatedAt holds the value of the "created_at" field.
-	CreatedAt string `json:"created_at,omitempty"`
+	CreatedAt time.Time `json:"created_at,omitempty"`
+	// EditedAt holds the value of the "edited_at" field.
+	EditedAt time.Time `json:"edited_at,omitempty"`
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -40,9 +42,9 @@ func (*ToDo) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullBool)
 		case todo.FieldID:
 			values[i] = new(sql.NullInt64)
-		case todo.FieldTodoContext, todo.FieldCreatedAt:
+		case todo.FieldTodoContext:
 			values[i] = new(sql.NullString)
-		case todo.FieldCompletedAt:
+		case todo.FieldCompletedAt, todo.FieldCreatedAt, todo.FieldEditedAt:
 			values[i] = new(sql.NullTime)
 		case todo.FieldTodoUUID, todo.FieldUserUUID:
 			values[i] = new(uuid.UUID)
@@ -98,10 +100,16 @@ func (td *ToDo) assignValues(columns []string, values []any) error {
 				td.CompletedAt = value.Time
 			}
 		case todo.FieldCreatedAt:
-			if value, ok := values[i].(*sql.NullString); !ok {
+			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field created_at", values[i])
 			} else if value.Valid {
-				td.CreatedAt = value.String
+				td.CreatedAt = value.Time
+			}
+		case todo.FieldEditedAt:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field edited_at", values[i])
+			} else if value.Valid {
+				td.EditedAt = value.Time
 			}
 		}
 	}
@@ -147,7 +155,10 @@ func (td *ToDo) String() string {
 	builder.WriteString(td.CompletedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
 	builder.WriteString("created_at=")
-	builder.WriteString(td.CreatedAt)
+	builder.WriteString(td.CreatedAt.Format(time.ANSIC))
+	builder.WriteString(", ")
+	builder.WriteString("edited_at=")
+	builder.WriteString(td.EditedAt.Format(time.ANSIC))
 	builder.WriteByte(')')
 	return builder.String()
 }

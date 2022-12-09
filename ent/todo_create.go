@@ -92,15 +92,29 @@ func (tdc *ToDoCreate) SetNillableCompletedAt(t *time.Time) *ToDoCreate {
 }
 
 // SetCreatedAt sets the "created_at" field.
-func (tdc *ToDoCreate) SetCreatedAt(s string) *ToDoCreate {
-	tdc.mutation.SetCreatedAt(s)
+func (tdc *ToDoCreate) SetCreatedAt(t time.Time) *ToDoCreate {
+	tdc.mutation.SetCreatedAt(t)
 	return tdc
 }
 
 // SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
-func (tdc *ToDoCreate) SetNillableCreatedAt(s *string) *ToDoCreate {
-	if s != nil {
-		tdc.SetCreatedAt(*s)
+func (tdc *ToDoCreate) SetNillableCreatedAt(t *time.Time) *ToDoCreate {
+	if t != nil {
+		tdc.SetCreatedAt(*t)
+	}
+	return tdc
+}
+
+// SetEditedAt sets the "edited_at" field.
+func (tdc *ToDoCreate) SetEditedAt(t time.Time) *ToDoCreate {
+	tdc.mutation.SetEditedAt(t)
+	return tdc
+}
+
+// SetNillableEditedAt sets the "edited_at" field if the given value is not nil.
+func (tdc *ToDoCreate) SetNillableEditedAt(t *time.Time) *ToDoCreate {
+	if t != nil {
+		tdc.SetEditedAt(*t)
 	}
 	return tdc
 }
@@ -206,6 +220,10 @@ func (tdc *ToDoCreate) defaults() {
 		v := todo.DefaultCreatedAt
 		tdc.mutation.SetCreatedAt(v)
 	}
+	if _, ok := tdc.mutation.EditedAt(); !ok {
+		v := todo.DefaultEditedAt
+		tdc.mutation.SetEditedAt(v)
+	}
 }
 
 // check runs all checks and user-defined validators on the builder.
@@ -227,6 +245,9 @@ func (tdc *ToDoCreate) check() error {
 	}
 	if _, ok := tdc.mutation.CreatedAt(); !ok {
 		return &ValidationError{Name: "created_at", err: errors.New(`ent: missing required field "ToDo.created_at"`)}
+	}
+	if _, ok := tdc.mutation.EditedAt(); !ok {
+		return &ValidationError{Name: "edited_at", err: errors.New(`ent: missing required field "ToDo.edited_at"`)}
 	}
 	return nil
 }
@@ -297,11 +318,19 @@ func (tdc *ToDoCreate) createSpec() (*ToDo, *sqlgraph.CreateSpec) {
 	}
 	if value, ok := tdc.mutation.CreatedAt(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
+			Type:   field.TypeTime,
 			Value:  value,
 			Column: todo.FieldCreatedAt,
 		})
 		_node.CreatedAt = value
+	}
+	if value, ok := tdc.mutation.EditedAt(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: todo.FieldEditedAt,
+		})
+		_node.EditedAt = value
 	}
 	return _node, _spec
 }

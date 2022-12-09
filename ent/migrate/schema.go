@@ -16,7 +16,8 @@ var (
 		{Name: "todo_context", Type: field.TypeString, Default: "null"},
 		{Name: "completion", Type: field.TypeBool, Default: false},
 		{Name: "completed_at", Type: field.TypeTime},
-		{Name: "created_at", Type: field.TypeString, Default: "null"},
+		{Name: "created_at", Type: field.TypeTime},
+		{Name: "edited_at", Type: field.TypeTime},
 	}
 	// ToDosTable holds the schema information for the "to_dos" table.
 	ToDosTable = &schema.Table{

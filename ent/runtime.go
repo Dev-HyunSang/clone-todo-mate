@@ -40,7 +40,11 @@ func init() {
 	// todoDescCreatedAt is the schema descriptor for created_at field.
 	todoDescCreatedAt := todoFields[5].Descriptor()
 	// todo.DefaultCreatedAt holds the default value on creation for the created_at field.
-	todo.DefaultCreatedAt = todoDescCreatedAt.Default.(string)
+	todo.DefaultCreatedAt = todoDescCreatedAt.Default.(time.Time)
+	// todoDescEditedAt is the schema descriptor for edited_at field.
+	todoDescEditedAt := todoFields[6].Descriptor()
+	// todo.DefaultEditedAt holds the default value on creation for the edited_at field.
+	todo.DefaultEditedAt = todoDescEditedAt.Default.(time.Time)
 	userFields := schema.User{}.Fields()
 	_ = userFields
 	// userDescUserUUID is the schema descriptor for user_uuid field.

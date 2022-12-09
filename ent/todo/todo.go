@@ -25,6 +25,8 @@ const (
 	FieldCompletedAt = "completed_at"
 	// FieldCreatedAt holds the string denoting the created_at field in the database.
 	FieldCreatedAt = "created_at"
+	// FieldEditedAt holds the string denoting the edited_at field in the database.
+	FieldEditedAt = "edited_at"
 	// Table holds the table name of the todo in the database.
 	Table = "to_dos"
 )
@@ -38,6 +40,7 @@ var Columns = []string{
 	FieldCompletion,
 	FieldCompletedAt,
 	FieldCreatedAt,
+	FieldEditedAt,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -62,5 +65,7 @@ var (
 	// DefaultCompletedAt holds the default value on creation for the "completed_at" field.
 	DefaultCompletedAt time.Time
 	// DefaultCreatedAt holds the default value on creation for the "created_at" field.
-	DefaultCreatedAt string
+	DefaultCreatedAt time.Time
+	// DefaultEditedAt holds the default value on creation for the "edited_at" field.
+	DefaultEditedAt time.Time
 )
