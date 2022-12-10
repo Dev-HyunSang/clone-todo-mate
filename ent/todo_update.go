@@ -91,14 +91,6 @@ func (tdu *ToDoUpdate) SetCompletedAt(t time.Time) *ToDoUpdate {
 	return tdu
 }
 
-// SetNillableCompletedAt sets the "completed_at" field if the given value is not nil.
-func (tdu *ToDoUpdate) SetNillableCompletedAt(t *time.Time) *ToDoUpdate {
-	if t != nil {
-		tdu.SetCompletedAt(*t)
-	}
-	return tdu
-}
-
 // SetCreatedAt sets the "created_at" field.
 func (tdu *ToDoUpdate) SetCreatedAt(t time.Time) *ToDoUpdate {
 	tdu.mutation.SetCreatedAt(t)
@@ -331,14 +323,6 @@ func (tduo *ToDoUpdateOne) SetNillableCompletion(b *bool) *ToDoUpdateOne {
 // SetCompletedAt sets the "completed_at" field.
 func (tduo *ToDoUpdateOne) SetCompletedAt(t time.Time) *ToDoUpdateOne {
 	tduo.mutation.SetCompletedAt(t)
-	return tduo
-}
-
-// SetNillableCompletedAt sets the "completed_at" field if the given value is not nil.
-func (tduo *ToDoUpdateOne) SetNillableCompletedAt(t *time.Time) *ToDoUpdateOne {
-	if t != nil {
-		tduo.SetCompletedAt(*t)
-	}
 	return tduo
 }
 

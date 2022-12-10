@@ -62,8 +62,6 @@ var (
 	DefaultTodoContext string
 	// DefaultCompletion holds the default value on creation for the "completion" field.
 	DefaultCompletion bool
-	// DefaultCompletedAt holds the default value on creation for the "completed_at" field.
-	DefaultCompletedAt time.Time
 	// DefaultCreatedAt holds the default value on creation for the "created_at" field.
 	DefaultCreatedAt time.Time
 	// DefaultEditedAt holds the default value on creation for the "edited_at" field.

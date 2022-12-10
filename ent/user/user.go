@@ -60,7 +60,7 @@ var (
 	// DefaultUserNickname holds the default value on creation for the "user_nickname" field.
 	DefaultUserNickname string
 	// DefaultUpdatedAt holds the default value on creation for the "updated_at" field.
-	DefaultUpdatedAt time.Time
+	DefaultUpdatedAt func() time.Time
 	// DefaultCreatedAt holds the default value on creation for the "created_at" field.
-	DefaultCreatedAt time.Time
+	DefaultCreatedAt func() time.Time
 )

@@ -25,11 +25,11 @@ func (ToDo) Fields() []ent.Field {
 		field.Bool("completion").
 			Default(false),
 		field.Time("completed_at").
-			Default("null"), // 완료하지 않으면 표시하지 않음.
+			Default(nil), // 완료하지 않으면 표시하지 않음.
 		field.Time("created_at").
-			Default(time.Now()), // Year-Mouth-Day
+			Default(time.Now().AddDate(2006, 01, 02)), // Year-Mouth-Day
 		field.Time("edited_at").
-			Default(time.Now()),
+			Default(time.Now().AddDate(2006, 01, 02)),
 	}
 }
 

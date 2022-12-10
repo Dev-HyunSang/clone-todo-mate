@@ -1,10 +1,11 @@
 package schema
 
 import (
+	"time"
+
 	"entgo.io/ent"
 	"entgo.io/ent/schema/field"
 	"github.com/google/uuid"
-	"time"
 )
 
 // User holds the schema definition for the User entity.
@@ -24,9 +25,9 @@ func (User) Fields() []ent.Field {
 		field.String("user_nickname").
 			Default("null"),
 		field.Time("updated_at").
-			Default(time.Now()),
+			Default(time.Now),
 		field.Time("created_at").
-			Default(time.Now()),
+			Default(time.Now),
 	}
 }
 

@@ -83,14 +83,6 @@ func (tdc *ToDoCreate) SetCompletedAt(t time.Time) *ToDoCreate {
 	return tdc
 }
 
-// SetNillableCompletedAt sets the "completed_at" field if the given value is not nil.
-func (tdc *ToDoCreate) SetNillableCompletedAt(t *time.Time) *ToDoCreate {
-	if t != nil {
-		tdc.SetCompletedAt(*t)
-	}
-	return tdc
-}
-
 // SetCreatedAt sets the "created_at" field.
 func (tdc *ToDoCreate) SetCreatedAt(t time.Time) *ToDoCreate {
 	tdc.mutation.SetCreatedAt(t)
@@ -211,10 +203,6 @@ func (tdc *ToDoCreate) defaults() {
 	if _, ok := tdc.mutation.Completion(); !ok {
 		v := todo.DefaultCompletion
 		tdc.mutation.SetCompletion(v)
-	}
-	if _, ok := tdc.mutation.CompletedAt(); !ok {
-		v := todo.DefaultCompletedAt
-		tdc.mutation.SetCompletedAt(v)
 	}
 	if _, ok := tdc.mutation.CreatedAt(); !ok {
 		v := todo.DefaultCreatedAt
