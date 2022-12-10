@@ -2,6 +2,7 @@ package database
 
 import (
 	"context"
+
 	"github.com/dev-hyunsang/clone-todo-mate/ent"
 )
 
@@ -10,6 +11,9 @@ func ConnectionSQLite() (*ent.Client, error) {
 	client, err := ent.Open(
 		"sqlite3",
 		"file:clone-todo-mate.db?_fk=1")
+	if err != nil {
+		return nil, err
+	}
 
 	defer client.Close()
 
