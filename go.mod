@@ -5,7 +5,10 @@ go 1.19
 require (
 	entgo.io/ent v0.11.3
 	github.com/gofiber/fiber/v2 v2.38.1
+	github.com/golang-jwt/jwt v3.2.2+incompatible
+	github.com/golang-jwt/jwt/v4 v4.4.2
 	github.com/google/uuid v1.3.0
+	github.com/mattn/go-sqlite3 v1.14.16
 	golang.org/x/crypto v0.0.0-20220517005047-85d78b3ac167
 )
 
@@ -15,7 +18,6 @@ require (
 	github.com/andybalholm/brotli v1.0.4 // indirect
 	github.com/apparentlymart/go-textseg/v13 v13.0.0 // indirect
 	github.com/go-openapi/inflect v0.19.0 // indirect
-	github.com/golang-jwt/jwt/v4 v4.4.2 // indirect
 	github.com/google/go-cmp v0.5.6 // indirect
 	github.com/hashicorp/hcl/v2 v2.13.0 // indirect
 	github.com/klauspost/compress v1.15.11 // indirect
