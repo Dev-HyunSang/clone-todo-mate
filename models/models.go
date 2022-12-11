@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/dev-hyunsang/clone-todo-mate/ent"
-	"github.com/golang-jwt/jwt"
 	"github.com/google/uuid"
 )
 
@@ -12,7 +11,7 @@ import (
 type User struct {
 	UserUUID     uuid.UUID `json:"user_uuid"`
 	UserEmail    string    `json:"user_email"`
-	UserPassword string    `json:"user_passowrd"`
+	UserPassword string    `json:"user_passoword"`
 	UserNickname string    `json:"user_nickname"`
 	UpdatedAt    time.Time `json:"updated_at"`
 	CreatedAt    time.Time `json:"created_at"`
@@ -39,11 +38,27 @@ type ToDo struct {
 	RespondedAt time.Time `json:"resoponded_at"`
 }*/
 
+type RequestJoin struct {
+	UserEmail    string `json:"user_email"`
+	UserPassword string `json:"user_password"`
+	UserNickname string `json:"user_nickname"`
+}
+
 type RequestLogin struct {
 	UserEmail    string `json:"user_email"`
 	UserPassword string `json:"user_password"`
 }
 
+type RequestCreateToDo struct {
+	ToDoContext    string `json:"todo_context"`
+	ToDoCompletion bool   `json:"todo_completion"`
+}
+
+type RequestReadToDo struct {
+	RequestDate time.Time `json:"request_date"`
+}
+
+// === Response ===
 type SuccessRespUserData struct {
 	Code        string    `json:"code"`
 	StatusCode  int       `json:"status_code"`
@@ -54,10 +69,22 @@ type SuccessRespUserData struct {
 }
 
 // 구조체 이름이 길어지는 건 기분탓...
-type SuccessRespSeachingUser struct {
+type SuccessRespSeachingUserToDo struct {
 	Code       string `json:"code"`
 	StatusCode int    `json:"status_code"`
 	Success    bool   `json:"success"`
+	Message    string `json:"message"`
+	Data       []*ent.ToDo
+	ResponedAt time.Time `json:"responed_at"`
+}
+
+type SuccessReadToDo struct {
+	Code       string `json:"code"`
+	StatusCode int    `json:"status_code"`
+	Success    bool   `json:"success"`
+	Message    string `json:"message"`
+	Data       []*ent.ToDo
+	ResponedAt time.Time `json:"responed_at"`
 }
 
 type SuccessResp struct {
@@ -74,7 +101,7 @@ type SuccessLoginResp struct {
 	Success    bool   `json:"success"`
 	Message    string `json:"message"`
 	Data       struct {
-		Token jwt.Token `json:"token"`
+		Token string `json:"token"`
 	}
 	ResopondedAt time.Time `json:"resoponded_at"`
 }
