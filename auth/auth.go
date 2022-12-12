@@ -29,7 +29,7 @@ func VerifyJWT(cookie string) (jwt.MapClaims, error) {
 	token, err := jwt.Parse(cookie, func(t *jwt.Token) (interface{}, error) {
 		return []byte("clone_todo_mate"), nil
 	})
-	if err == nil {
+	if err != nil {
 		return nil, err
 	}
 
