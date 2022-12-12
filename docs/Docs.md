@@ -145,3 +145,16 @@ jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NzA3NTA3ODYsInVzZXJfbmlja25
     "responded_at": "2022-12-11T17:18:02.317328+09:00"
 }
 ```
+
+#### Unauthorized Response
+<!-- JWT 토큰이 없는 경우. 로그인 관련 오류 -->
+```json
+{
+    "code": "Unauthorized",
+    "status_code": 401,
+    "success": false,
+    "message": "로그인 이후 다시 시도해 주세요.",
+    "err_message": null,
+    "responded_at": "2022-12-13T08:44:51.374958+09:00"
+}
+```
