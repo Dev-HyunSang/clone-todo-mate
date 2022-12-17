@@ -58,6 +58,20 @@ type RequestReadToDo struct {
 	RequestDate time.Time `json:"request_date"`
 }
 
+type RequestDeleteToDo struct {
+	ToDoUUID uuid.UUID `json:"todo_uuid"`
+}
+
+type RequestEditToDo struct {
+	ToDoUUID    uuid.UUID `json:"todo_uuid"`
+	ToDoContext string    `json:"todo_context"`
+}
+
+type RequestCompletionToDo struct {
+	ToDoUUID       uuid.UUID `json:"todo_uuid"`
+	ToDoCompletion bool      `json:"todo_completion"`
+}
+
 // === Response ===
 type SuccessRespUserData struct {
 	Code        string    `json:"code"`
