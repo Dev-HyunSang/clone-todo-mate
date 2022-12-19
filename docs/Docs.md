@@ -158,3 +158,74 @@ jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NzA3NTA3ODYsInVzZXJfbmlja25
     "responded_at": "2022-12-13T08:44:51.374958+09:00"
 }
 ```
+
+### GET `/api/todo/read`
+#### Request
+```
+NULL
+```
+#### Response
+```json
+{
+    "code": "success",
+    "status_code": 200,
+    "success": false,
+    "message": "성공적으로 할 일을 불러왔어요!",
+    "Data": [
+        {
+            "id": 1,
+            "todo_uuid": "b749308a-5bda-4113-8866-f090259e5024",
+            "user_uuid": "59ec9675-c192-4d7c-a1b5-494b991a6ddd",
+            "todo_context": "Hello World!",
+            "completed_at": "0001-01-01T00:00:00Z",
+            "created_at": "2022-12-11T17:18:02.314659+09:00",
+            "edited_at": "4029-01-13T17:17:59.395079+09:00"
+        },
+        {
+            "id": 2,
+            "todo_uuid": "5b7b24b8-4a7a-47f5-8588-3dd71b28c4fa",
+            "user_uuid": "59ec9675-c192-4d7c-a1b5-494b991a6ddd",
+            "todo_context": "Hello World!",
+            "completed_at": "0001-01-01T00:00:00Z",
+            "created_at": "2022-12-13T08:44:38.667012+09:00",
+            "edited_at": "4029-01-15T08:44:30.92056+09:00"
+        }
+    ],
+    "responed_at": "2022-12-13T11:27:10.485118+09:00"
+}
+```
+
+### DELETE `/api/todo/delete`
+
+#### Request
+```json
+{
+    "todo_uuid": "f701d369-ade0-42ee-aeef-214b2417fbc4"
+}
+```
+
+#### Response
+```json
+{
+    "code": "success",
+    "status_code": 200,
+    "success": true,
+    "message": "성공적으로 할일을 삭제했어요!",
+    "responded_at": "2022-12-13T11:13:04.720127+09:00"
+}
+```
+
+#### DELETE `/api/todo/:uuid`
+#### Request
+`/api/todo/delete/5b7b24b8-4a7a-47f5-8588-3dd71b28c4fa`
+
+#### Response
+```json
+{
+    "code": "success",
+    "status_code": 200,
+    "success": true,
+    "message": "성공적으로 할일을 삭제했어요!",
+    "responded_at": "2022-12-17T15:16:54.337+09:00"
+}
+```
