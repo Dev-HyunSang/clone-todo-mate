@@ -33,14 +33,13 @@ func CreateToDo(inputData models.ToDo) error {
 
 // 모든 ToDo 항목을 절때로 불러오지 않습니다. 프론트 상에서 처리하기 어려움.
 // 요청하는 날짜에만, 사용자가 선택한 날짜를 선택하여 요청하는 경우 해당 날짜의 할일을 불러옴.
-func AllReadToDo(userUUID uuid.UUID, date time.Time) ([]*ent.ToDo, error) {
+func AllReadToDo(userUUID uuid.UUID) ([]*ent.ToDo, error) {
 	client, err := ConnectionSQLite()
 	if err != nil {
 		return nil, err
 	}
 
 	data, err := client.ToDo.Query().
-		Where(todo.CreatedAt(date)).
 		Where(todo.UserUUID(userUUID)).
 		All(context.Background())
 	if err != nil {
@@ -50,7 +49,7 @@ func AllReadToDo(userUUID uuid.UUID, date time.Time) ([]*ent.ToDo, error) {
 	return data, nil
 }
 
-func CompletionToDo(userUUID, todoUUID uuid.UUID) error {
+func CompletionToDo(userUUID, todoUUID uuid.UUID, isCompletionToDo bool) error {
 	client, err := ConnectionSQLite()
 	if err != nil {
 		return err
@@ -59,7 +58,8 @@ func CompletionToDo(userUUID, todoUUID uuid.UUID) error {
 	_, err = client.ToDo.Update().
 		Where(todo.UserUUID(userUUID)).
 		Where(todo.TodoUUID(todoUUID)).
-		SetCompletion(true).
+		SetCompletion(isCompletionToDo).
+		SetCompletedAt(time.Now()).
 		Save(context.Background())
 	if err != nil {
 		return err
@@ -107,6 +107,21 @@ func DeleteToDo(todoUUID, userUUID uuid.UUID) error {
 	if err != nil {
 		return err
 	}
+
+	return nil
+}
+
+func EditToDo(todoUUID, userUUID uuid.UUID, todoContext string) error {
+	client, err := ConnectionSQLite()
+	if err != nil {
+		return nil
+	}
+
+	client.ToDo.Update().
+		Where(todo.UserUUID(userUUID)).
+		Where(todo.UserUUID(userUUID)).
+		SetTodoContext(todoContext).
+		SaveX(context.Background())
 
 	return nil
 }
