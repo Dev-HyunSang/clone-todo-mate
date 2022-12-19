@@ -115,4 +115,39 @@ func LoginUser(c *fiber.Ctx) error {
 	})
 }
 
-func DeleteUser(c *fiber.Ctx)
+func DeleteUser(c *fiber.Ctx) error {
+	user := new(models.User)
+	cookie := c.Cookies("jwt")
+
+	payload, err := auth.VerifyJWT(cookie)
+	if err != nil {
+		return c.Status(fiber.StatusUnauthorized).JSON(models.ErrResp{
+			Code:        "Unauthorized",
+			StatusCode:  fiber.StatusUnauthorized,
+			Success:     false,
+			Message:     "로그인 이후 다시 시도해 주세요.",
+			RespondedAt: time.Now(),
+		})
+	}
+
+	stringUUID := payload["user_uuid"].(string)
+	user.UserUUID = uuid.MustParse(stringUUID)
+
+	if err = database.DeleteUser(user.UserUUID); err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(models.ErrResp{
+			Code:        "error",
+			StatusCode:  fiber.StatusInternalServerError,
+			Success:     false,
+			Message:     "사용자를 삭제하던 도중 오류가 발생했어요. 잠시후 다시 시도 주세요.",
+			ErrMessage:  err,
+			RespondedAt: time.Now(),
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(models.SuccessResp{
+		Code:       "success",
+		StatusCode: fiber.StatusOK,
+		Success:    true,
+		Message:    "성공적으로 사용자를 삭제했어요. 사용자",
+	})
+}
